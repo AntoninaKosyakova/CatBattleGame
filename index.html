@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>EntryPointForTheGame</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="./styles/index.css" />
+    </head>
+    <body>
+        <div id="entry">
+            <h2>Welcome to Cat Battle Forest!</h2>
+
+            <div id="forms">
+                <div id="myform">
+                    <h3>Player 1</h3>
+                    <form id="loginForm" action="pages/character-selection.html" method="get">
+                        <div>
+                            <label for="name">Name:</label>
+                            <input type="text" name="nameOfPlayer1" id="nameOfPlayer1" placeholder="Your Name" />
+                            <span class="warning" id="nameError">The 'Name' field is required.</span>
+                        </div>
+                        <div>
+                            <label for="age">Age:</label>
+                            <input
+                                type="number"
+                                id="ageOfPlayer1"
+                                name="ageOfPlayer1"
+                                placeholder="Age"
+                                min="1"
+                                max="110"
+                            />
+                            <span class="warning" id="ageError">The 'Age' field is required.</span>
+                        </div>
+
+                        <h3>Player 2</h3>
+                        <div>
+                            <label for="name">Name:</label>
+                            <input type="text" name="nameOfPlayer2" id="nameOfPlayer2" placeholder="Your Name" />
+                            <span class="warning" id="nameError2">The 'Name' field is required.</span>
+                        </div>
+                        <div>
+                            <label for="age">Age:</label>
+                            <input
+                                type="number"
+                                id="ageOfPlayer2"
+                                name="ageOfPlayer2"
+                                placeholder="Age"
+                                min="1"
+                                max="110"
+                            />
+                            <span class="warning" id="ageError2">The 'Age' field is required.</span>
+                        </div>
+                        <input type="submit" value="Start Game" />
+                    </form>
+                </div>
+            </div>
+
+            <script defer type="module" src="scripts/player.js"></script>
+        </div>
+    </body>
+</html>

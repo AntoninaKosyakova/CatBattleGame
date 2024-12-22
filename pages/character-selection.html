@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Character Selection</title>
+        <link rel="stylesheet" href="../styles/character-selection.css" />
+    </head>
+    <body>
+        <h2>Character Selection</h2>
+        <div id="player1Choice">
+            <h4>Player 1 Choice:</h4>
+            <div id="scrollForPlayer1">
+                <!-- imgs -->
+                <p>Loading ...</p>
+            </div>
+        </div>
+        <div id="player2Choice">
+            <h4>Player 2 Choice:</h4>
+            <div id="scrollForPlayer2">
+                <!-- imgs -->
+                <p>Loading ...</p>
+            </div>
+        </div>
+
+        <div id="PlayerInformationSection">
+            <div class="player-info" id="Player1Information">
+                <h1>Player 1</h1>
+                <div data-element="name"></div>
+                <div data-element="age"></div>
+                <div data-element="character"></div>
+                <img data-element="skinImage" />
+            </div>
+            <div class="player-info" id="Player2Information">
+                <h1>Player 2</h1>
+                <div data-element="name"></div>
+                <div data-element="age"></div>
+                <div data-element="character"></div>
+                <img data-element="skinImage" />
+            </div>
+        </div>
+    </body>
+    <script defer type="module" src="../scripts/character.js"></script>
+</html>

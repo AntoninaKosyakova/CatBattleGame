@@ -1,0 +1,129 @@
+@font-face {
+  font-family: "MightySoul";
+  src: url("../fonts/MightySouly-lxggD.ttf");
+}
+
+.warning {
+  color: #f44336;
+  font-size: 0.8rem;
+  display: none;
+}
+
+#forms {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h2 {
+  font-family: "MightySoul", sans-serif;
+  color: rgb(88, 146, 152);
+  font-weight: 600;
+  margin: auto;
+  width: 50%;
+  border: 3px solid rgb(32, 110, 87);
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#name,
+#age {
+  font-weight: 600;
+  color: black;
+  padding: 3px;
+}
+
+#myform {
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  padding-right: 30px;
+}
+
+#myform h3 {
+  color: rgb(51, 96, 81);
+}
+
+#myform2 h3 {
+  color: rgb(51, 96, 81);
+}
+
+#entry {
+  padding: 50px 0;
+  border: 3px solid rgb(61, 41, 27);
+  text-align: center;
+  background-color: rgb(199, 225, 207);
+  margin-top: 130px;
+}
+
+body {
+  background-image: url("../public/forestBackground.jpg");
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+/* Updated Compact Input and Button Styles */
+
+input[type="text"],
+input[type="number"] {
+  width: 80%;
+  padding: 6px; /* Reduced padding */
+  margin-top: 5px;
+  border: 1px solid rgb(32, 110, 87); /* Green border */
+  border-radius: 3px; /* Slightly smaller radius */
+  background-color: rgb(243, 252, 244); /* Light green background */
+  color: rgb(32, 51, 41); /* Dark green text */
+  font-size: 0.9rem; /* Reduced font size */
+  font-family: "Arial", sans-serif;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+input[type="text"]::placeholder,
+input[type="number"]::placeholder {
+  color: rgb(112, 145, 122); /* Soft placeholder color */
+  font-size: 0.8rem; /* Smaller placeholder text */
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  outline: none;
+  border-color: rgb(61, 41, 27); /* Darker green on focus */
+  background-color: rgb(227, 242, 233); /* Slightly darker on focus */
+  box-shadow: 0 0 3px rgb(61, 41, 27); /* Glow effect */
+}
+
+input[type="submit"] {
+  width: 85%;
+  padding: 8px 0; /* Reduced padding */
+  margin-top: 10px;
+  border: none;
+  border-radius: 3px; /* Smaller radius */
+  background-color: rgb(61, 122, 102); /* Earthy green button */
+  color: rgb(243, 252, 244); /* Light text */
+  font-size: 0.9rem; /* Reduced font size */
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+input[type="submit"]:hover {
+  background-color: rgb(88, 146, 152); /* Slightly lighter green */
+  transform: translateY(-2px); /* Reduced hover lift */
+}
+
+input[type="submit"]:active {
+  background-color: rgb(32, 110, 87); /* Dark green on click */
+  transform: translateY(0); /* Reset lift effect */
+}

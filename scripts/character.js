@@ -9,41 +9,65 @@ async function getAvailableCharacters() {
             name: "Turkish Angora",
             skin1: "../public/turkishAngoraSkin2.jpg",
             skin2: null,
+            stats_name: "lauren",
+            hp: null,
+            damage: null,
         },
         {
             name: "Russian Blue",
             skin1: "../public/RussianBlueSkin2.jpg",
             skin2: null,
+            stats_name: "Susan",
+            hp: null,
+            damage: null,
         },
         {
             name: "British Shorthair",
             skin1: "../public/britishShorthairSkin2.jpg",
             skin2: null,
+            stats_name: "Micheal",
+            hp: null,
+            damage: null,
         },
         {
             name: "Maine Coon",
             skin1: "../public/MaineCoonSkin2.jpg",
             skin2: null,
+            stats_name: "David",
+            hp: null,
+            damage: null,
         },
         {
             name: "Persian",
             skin1: "../public/PersianCatSkin2.jpg",
             skin2: null,
+            stats_name: "Bruce",
+            hp: null,
+            damage: null,
         },
         {
             name: "Ragdoll",
             skin1: "../public/RagdollSkin2.jpg",
             skin2: null,
+            stats_name: "Kevin",
+            hp: null,
+            damage: null,
         },
         {
             name: "Siberian",
             skin1: "../public/SiberianSkin2.jpg",
             skin2: null,
+            stats_name: "Wesley",
+            hp: null,
+            damage: null,
         },
         {
             name: "Scottish Fold",
             skin1: "../public/ScottishFoldSkin2.jpg",
             skin2: null,
+            stats_name: "John",
+            hp: null,
+            damage: null,
         },
     ];
 }
@@ -62,7 +86,23 @@ async function getAvailableCharactersWithAnotherSkin() {
                     return url;
                 });
 
+                const [hp, damage] = await fetch(`https://api.tvmaze.com/search/people?q=${character.stats_name}`).then(
+                    async (response) => {
+                        const json = await response.json();
+                        if (json.length > 0 && json[0].person !== undefined) {
+                            const person = json[0].person;
+                            const dmg = person.updated.toString().slice(8, 9);
+                            return [parseInt(person.id.toString().slice(0, 2)), parseInt(dmg)];
+                        } else {
+                            console.warn("Got json without person for " + character.stats_name, json);
+                            return [20, 4];
+                        }
+                    }
+                );
+
                 character.skin2 = url2;
+                character.hp = hp;
+                character.damage = damage;
                 return character;
             })
         );
@@ -89,10 +129,13 @@ function registerPlayerChoice(playerChoice, character, skinUrl) {
 }
 
 function updatePlayerInformation(playerChoice, rootElement) {
+    console.log(player1Choice, player2Choice);
     rootElement.querySelector('[data-element="name"]').innerText = playerChoice.player.name;
     rootElement.querySelector('[data-element="age"]').innerText = playerChoice.player.age;
     rootElement.querySelector('[data-element="skinImage"]').src = playerChoice.skin;
     rootElement.querySelector('[data-element="character"]').innerText = playerChoice.character.name;
+    rootElement.querySelector('[data-element="hp"]').innerText = playerChoice.character.hp;
+    rootElement.querySelector('[data-element="damage"]').innerText = playerChoice.character.damage;
 }
 
 async function displayCharacterChoices(

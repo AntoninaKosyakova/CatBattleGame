@@ -1,6 +1,7 @@
 "use strict";
 
 import { Player } from "../classes/player.js";
+import { Game } from "../classes/game.js";
 
 function isAValidName(str) {
     return str.length > 0;
@@ -52,17 +53,9 @@ $("#loginForm").on("submit", function (event) {
         // prevent default behavior
         event.preventDefault();
     } else {
-        const player1 = {
-            name: nameOfPlayer1,
-            age: ageOfPlayer1,
-        };
-
-        const player2 = {
-            name: nameOfPlayer2,
-            age: ageOfPlayer2,
-        };
-
-        Player.save("player1", new Player(nameOfPlayer1, ageOfPlayer1));
-        Player.save("player2", new Player(nameOfPlayer2, ageOfPlayer2));
+        const player1 = new Player(Game.PLAYER1_ID, nameOfPlayer1, ageOfPlayer1);
+        const player2 = new Player(Game.PLAYER2_ID, nameOfPlayer2, ageOfPlayer2);
+        Game.savePlayer(player1);
+        Game.savePlayer(player2);
     }
 });

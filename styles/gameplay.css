@@ -1,0 +1,47 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: "Verdana", sans-serif;
+    background: url("../public/forest-landscape.jpg") no-repeat center center fixed;
+    background-size: cover; /* Ensures the background covers the whole page */
+    color: white; /* High-contrast white text */
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    margin-bottom: 100px; /* Larger vertical space */
+    font-size: 96px; /* Double the previous size */
+    text-shadow: 6px 6px 12px rgba(0, 0, 0, 0.8); /* Stronger shadow for readability */
+}
+.images-container {
+    display: flex;
+    justify-content: center;
+    gap: 240px; /* Double the gap between the images */
+    margin-bottom: 160px; /* More space below the images */
+}
+.images-container img {
+    width: auto; /* Double the size */
+    height: 200px;
+    border: 12px solid #ffffff; /* Thicker border for emphasis */
+    border-radius: 30px;
+    background-color: rgba(0, 0, 0, 0.5); /* Subtle dark background */
+    box-shadow: 0px 16px 40px rgba(0, 0, 0, 0.4); /* Enhanced shadow */
+    object-fit: contain; /* Maintains image proportions */
+}
+button {
+    padding: 60px 120px; /* Double padding */
+    font-size: 52px; /* Double font size */
+    background-color: #1d4842; /* Tomato red for visibility */
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0px 16px 32px rgba(0, 0, 0, 0.6); /* Enhanced button shadow */
+    text-shadow: 6px 6px 12px rgba(0, 0, 0, 0.8); /* Text shadow for better visibility */
+}
+button:hover {
+    background-color: #1e5736; /* Slightly darker red on hover */
+}

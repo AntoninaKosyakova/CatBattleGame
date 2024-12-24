@@ -1,16 +1,13 @@
 export class Player {
-    constructor(name, age) {
+    constructor(id, name, age) {
+        this.id = id;
         this.name = name;
         this.age = age;
     }
 
-    static save(storageId, player) {
-        if (player instanceof Player) {
-            localStorage.setItem(storageId, JSON.stringify(player));
-            console.log(`Saved player ${storageId} to local storage.`);
-        } else {
-            console.error("The argument must be an instance of the Player class.");
-        }
+    save(storageId) {
+        localStorage.setItem(storageId, JSON.stringify(this));
+        console.log(`Saved player ${storageId} to local storage.`);
     }
 
     static fromLocalStorage(storageId) {

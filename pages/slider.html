@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Gameplay Duration Slider</title>
+        <link rel="stylesheet" href="../styles/slider.css" />
+        <script type="module" defer src="../scripts/slider.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Set Gameplay Duration</h1>
+            <div class="slider-container">
+                <input type="range" min="1" max="10" value="1" class="slider" id="durationSlider" />
+                <div class="value" id="sliderValue">1 minute</div>
+            </div>
+            <button class="button" onclick="startGame()">Start Game</button>
+        </div>
+    </body>
+</html>

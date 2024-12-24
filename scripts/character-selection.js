@@ -1,9 +1,12 @@
 import { Player } from "../classes/player.js";
+import { Character } from "../classes/character.js";
+import { Game } from "../classes/game.js";
+import { Template } from "../classes/template.js";
 
 const DEFAULT_IMAGE_URL = "../public/default.jpg";
 const CATS_API_KEY = "live_vnvV5nLn10sgWeC6otCVzYpiVj6tpzt04je6Ma65XDmXjJM0YonDATy18bjbN94Z";
 
-async function getAvailableCharacters() {
+async function getAvailableCats() {
     return [
         {
             name: "Turkish Angora",
@@ -73,7 +76,7 @@ async function getAvailableCharacters() {
 }
 
 async function getAvailableCharactersWithAnotherSkin() {
-    const withSkin2 = getAvailableCharacters().then(async (characters) => {
+    const withSkin2 = getAvailableCats().then(async (characters) => {
         return Promise.all(
             // use a list of objects to create a list of promises:
             characters.map(async (character) => {
@@ -110,32 +113,36 @@ async function getAvailableCharactersWithAnotherSkin() {
     return await withSkin2;
 }
 
-const player1Choice = {
-    player: Player.fromLocalStorage("player1"),
-    character: null,
-    skin: null,
-};
+const player1Choice = Game.newChoiceForPlayer(Game.PLAYER1_ID);
 
-const player2Choice = {
-    player: Player.fromLocalStorage("player2"),
-    character: null,
-    skin: null,
-};
+const player2Choice = Game.newChoiceForPlayer(Game.PLAYER2_ID);
 
 function registerPlayerChoice(playerChoice, character, skinUrl) {
     playerChoice.character = character;
     playerChoice.skin = skinUrl;
+    Game.saveCharacter(
+        new Character(
+            playerChoice.player.id,
+            playerChoice.player.name,
+            playerChoice.player.age,
+            playerChoice.skin,
+            playerChoice.character.name,
+            playerChoice.character.hp,
+            playerChoice.character.damage
+        )
+    );
     console.log("Updated player", playerChoice);
 }
 
 function updatePlayerInformation(playerChoice, rootElement) {
     console.log(player1Choice, player2Choice);
-    rootElement.querySelector('[data-element="name"]').innerText = playerChoice.player.name;
-    rootElement.querySelector('[data-element="age"]').innerText = playerChoice.player.age;
-    rootElement.querySelector('[data-element="skinImage"]').src = playerChoice.skin;
-    rootElement.querySelector('[data-element="character"]').innerText = playerChoice.character.name;
-    rootElement.querySelector('[data-element="hp"]').innerText = playerChoice.character.hp;
-    rootElement.querySelector('[data-element="damage"]').innerText = playerChoice.character.damage;
+    const userChoiceUi = new Template(rootElement);
+    userChoiceUi.field("name").innerText = playerChoice.player.name;
+    userChoiceUi.field("age").innerText = playerChoice.player.age;
+    userChoiceUi.field("skinImage").src = playerChoice.skin;
+    userChoiceUi.field("character").innerText = playerChoice.character.name;
+    userChoiceUi.field("hp").innerText = playerChoice.character.hp;
+    userChoiceUi.field("damage").innerText = playerChoice.character.damage;
 }
 
 async function displayCharacterChoices(

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cat Battle</title>
+        <link rel="stylesheet" href="../styles/gameplay.css" />
+    </head>
+    <body>
+        <h1>Turn of: <span id="player-turn">Name of Player</span></h1>
+        <div class="images-container">
+            <div id="player1">
+                <img data-element="skin" src="../public/PersianCatSkin2.jpg" alt="Persian Cat" />
+                Name = <span data-element="name"></span> Age = <span data-element="age"></span> Health =
+                <span data-element="health"></span>
+            </div>
+            <div id="player2">
+                <img data-element="skin" src="../public/RagdollSkin2.jpg" alt="Ragdoll Cat" />
+                Name = <span data-element="name"></span> Age = <span data-element="age"></span> Health =
+                <span data-element="health"></span>
+            </div>
+        </div>
+        <button onclick="attack()">Attack!</button>
+
+        <script type="module" defer src="../scripts/gameplay.js"></script>
+    </body>
+</html>

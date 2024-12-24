@@ -1,6 +1,8 @@
 import { Player } from "./player.js";
 import { Character } from "./character.js";
 
+const DURATION_SAVE_ID = "game_duration";
+
 export class Game {
     static PLAYER1_ID = "player1";
     static PLAYER2_ID = "player2";
@@ -26,8 +28,11 @@ export class Game {
     }
 
     static saveDuration(duration) {
-        const DURATION_SAVE_ID = "game_duration";
         localStorage.setItem(DURATION_SAVE_ID, duration.toString());
+    }
+
+    static getDurationMinutes() {
+        return parseInt(localStorage.getItem(DURATION_SAVE_ID));
     }
 
     static clear() {

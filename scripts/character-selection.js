@@ -75,46 +75,46 @@ async function getAvailableCats() {
     ];
 }
 
+async function fetchSkinImageUrl(breed) {
+    try {
+        const response = await fetch(`https://api.thecatapi.com/v1/breeds/search?api_key=${CATS_API_KEY}&q=${breed}`);
+        const json = await response.json();
+        return json.length > 0 && json[0].image ? json[0].image.url : DEFAULT_IMAGE_URL;
+    } catch (error) {
+        console.error(`Error fetching skin image for breed ${breed}:`, error);
+        return DEFAULT_IMAGE_URL;
+    }
+}
+
+async function fetchCharacterStats(statsName) {
+    try {
+        const response = await fetch(`https://api.tvmaze.com/search/people?q=${statsName}`);
+        const json = await response.json();
+        if (json.length > 0 && json[0].person) {
+            const person = json[0].person;
+            const damage = parseInt(person.updated.toString().slice(8, 9));
+            const hp = parseInt(person.id.toString().slice(0, 2));
+            return [hp, damage];
+        }
+    } catch (error) {
+        console.warn(`Error fetching stats for ${statsName}:`, error);
+    }
+    return [20, 4]; // Default stats
+}
+
 async function getAvailableCharactersWithAnotherSkin() {
-    const withSkin2 = getAvailableCats().then(async (characters) => {
-        return Promise.all(
-            // use a list of objects to create a list of promises:
-            characters.map(async (character) => {
-                const breed = character.name;
-                const url2 = await fetch(
-                    `https://api.thecatapi.com/v1/breeds/search?api_key=${CATS_API_KEY}&q=${breed}`
-                ).then(async (response) => {
-                    const json = await response.json();
-                    const url = json.length > 0 && json[0].image !== undefined ? json[0].image.url : DEFAULT_IMAGE_URL;
-                    return url;
-                });
-
-                const [hp, damage] = await fetch(`https://api.tvmaze.com/search/people?q=${character.stats_name}`).then(
-                    async (response) => {
-                        const json = await response.json();
-                        if (json.length > 0 && json[0].person !== undefined) {
-                            const person = json[0].person;
-                            const dmg = person.updated.toString().slice(8, 9);
-                            return [parseInt(person.id.toString().slice(0, 2)), parseInt(dmg)];
-                        } else {
-                            console.warn("Got json without person for " + character.stats_name, json);
-                            return [20, 4];
-                        }
-                    }
-                );
-
-                character.skin2 = url2;
-                character.hp = hp;
-                character.damage = damage;
-                return character;
-            })
-        );
-    });
-    return await withSkin2;
+    const characters = await getAvailableCats();
+    const updatedCharacters = await Promise.all(
+        characters.map(async (character) => {
+            character.skin2 = await fetchSkinImageUrl(character.name);
+            [character.hp, character.damage] = await fetchCharacterStats(character.stats_name);
+            return character;
+        })
+    );
+    return updatedCharacters;
 }
 
 const player1Choice = Game.newChoiceForPlayer(Game.PLAYER1_ID);
-
 const player2Choice = Game.newChoiceForPlayer(Game.PLAYER2_ID);
 
 function registerPlayerChoice(playerChoice, character, skinUrl) {
@@ -139,56 +139,77 @@ function updatePlayerInformation(playerChoice, rootElement) {
     const userChoiceUi = new Template(rootElement);
     userChoiceUi.field("name").innerText = playerChoice.player.name;
     userChoiceUi.field("age").innerText = playerChoice.player.age;
-    userChoiceUi.field("skinImage").src = playerChoice.skin;
-    userChoiceUi.field("character").innerText = playerChoice.character.name;
-    userChoiceUi.field("hp").innerText = playerChoice.character.hp;
-    userChoiceUi.field("damage").innerText = playerChoice.character.damage;
+    if (playerChoice.skin) {
+        userChoiceUi.field("skinImage").src = playerChoice.skin;
+        userChoiceUi.field("character").innerText = playerChoice.character.name;
+        userChoiceUi.field("hp").innerText = playerChoice.character.hp;
+        userChoiceUi.field("damage").innerText = playerChoice.character.damage;
+    }
 }
 
-async function displayCharacterChoices(
-    parentElement, // HTML Element
-    characters,
-    imageClickCallback //  this is a funciton (character, skinUrl) => void
-) {
+async function displayCharacterChoices(parentElement, characters, imageClickCallback) {
     parentElement.innerHTML = "";
 
-    for (let i in characters) {
-        const character = characters[i];
-        var charDiv = document.createElement("div");
-        var characterName = document.createElement("p");
-        var skin1Image = document.createElement("img");
-        var skin2Image = document.createElement("img");
+    const observer = new IntersectionObserver(
+        (entries, observerInstance) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src; // Load the actual image
+                    observerInstance.unobserve(img); // Stop observing once loaded
+                }
+            });
+        },
+        { root: null, threshold: 0.1 }
+    );
+
+    for (let character of characters) {
+        const charDiv = document.createElement("div");
+        const characterName = document.createElement("p");
+        const skin1Image = document.createElement("img");
+        const skin2Image = document.createElement("img");
+
         parentElement.appendChild(charDiv);
         charDiv.appendChild(characterName);
         charDiv.appendChild(skin1Image);
         charDiv.appendChild(skin2Image);
 
         characterName.innerText = character.name;
-        skin1Image.src = character.skin1;
-        skin2Image.src = character.skin2;
 
-        skin1Image.onclick = (t, e) => {
+        skin1Image.dataset.src = character.skin1;
+        skin2Image.dataset.src = character.skin2;
+
+        skin1Image.src = DEFAULT_IMAGE_URL;
+        skin2Image.src = DEFAULT_IMAGE_URL;
+
+        observer.observe(skin1Image);
+        observer.observe(skin2Image);
+
+        skin1Image.onclick = () => {
             imageClickCallback(character, character.skin1);
         };
-        skin2Image.onclick = (t, e) => {
+        skin2Image.onclick = () => {
             imageClickCallback(character, character.skin2);
         };
     }
 }
 
-function Main() {
+async function Main() {
     const player1InfoElement = document.getElementById("Player1Information");
     const player2InfoElement = document.getElementById("Player2Information");
+    updatePlayerInformation(player1Choice, player1InfoElement);
+    updatePlayerInformation(player2Choice, player2InfoElement);
 
-    getAvailableCharactersWithAnotherSkin().then(async (characters) => {
-        displayCharacterChoices(document.getElementById("scrollForPlayer1"), characters, (ch, sk) => {
-            registerPlayerChoice(player1Choice, ch, sk);
-            updatePlayerInformation(player1Choice, player1InfoElement);
-        });
-        displayCharacterChoices(document.getElementById("scrollForPlayer2"), characters, (ch, sk) => {
-            registerPlayerChoice(player2Choice, ch, sk);
-            updatePlayerInformation(player2Choice, player2InfoElement);
-        });
+    const characters = await getAvailableCharactersWithAnotherSkin();
+
+    await displayCharacterChoices(document.getElementById("scrollForPlayer1"), characters, (ch, sk) => {
+        registerPlayerChoice(player1Choice, ch, sk);
+        updatePlayerInformation(player1Choice, player1InfoElement);
+    });
+
+    await displayCharacterChoices(document.getElementById("scrollForPlayer2"), characters, (ch, sk) => {
+        registerPlayerChoice(player2Choice, ch, sk);
+        updatePlayerInformation(player2Choice, player2InfoElement);
     });
 }
 
@@ -199,7 +220,7 @@ slider.oninput = function () {
     valueDisplay.textContent = `${this.value} minute${this.value > 1 ? "s" : ""}`;
 };
 
-document.getElementById("startGameButton").onclick = (t, e) => {
+document.getElementById("startGameButton").onclick = () => {
     const duration = slider.value;
     Game.saveDuration(duration);
 

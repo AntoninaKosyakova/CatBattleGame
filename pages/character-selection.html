@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Character Selection</title>
         <link rel="stylesheet" href="../styles/character-selection.css" />
+        <link rel="stylesheet" href="../styles/slider.css" />
     </head>
     <body>
         <h2>Character Selection</h2>
@@ -39,6 +40,16 @@
                 <img data-element="skinImage" />
             </div>
         </div>
+
+        <div class="slider-wrapper">
+            <h1>Set Gameplay Duration</h1>
+            <div class="slider-container">
+                <input type="range" min="1" max="10" value="1" class="slider" id="durationSlider" />
+                <div class="value" id="sliderValue">1 minute</div>
+            </div>
+            <button class="button" id="startGameButton">Start Game</button>
+        </div>
     </body>
+
     <script defer type="module" src="../scripts/character-selection.js"></script>
 </html>

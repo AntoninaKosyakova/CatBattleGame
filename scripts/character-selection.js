@@ -192,4 +192,20 @@ function Main() {
     });
 }
 
+const slider = document.getElementById("durationSlider");
+const valueDisplay = document.getElementById("sliderValue");
+
+slider.oninput = function () {
+    valueDisplay.textContent = `${this.value} minute${this.value > 1 ? "s" : ""}`;
+};
+
+document.getElementById("startGameButton").onclick = (t, e) => {
+    const duration = slider.value;
+    Game.saveDuration(duration);
+
+    if (player1Choice.skin == null || player2Choice.skin == null) {
+        alert("Player selections are not finished");
+    } else window.location.href = "../pages/gameplay.html";
+};
+
 Main();

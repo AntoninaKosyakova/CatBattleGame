@@ -3,6 +3,8 @@
 import { Player } from "../classes/player.js";
 import { Game } from "../classes/game.js";
 
+Game.clear();
+
 function isAValidName(str) {
     return str.length > 0;
 }

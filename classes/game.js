@@ -24,4 +24,13 @@ export class Game {
     static readCharacter(playerId) {
         return Character.fromLocalStorage("character_" + playerId);
     }
+
+    static saveDuration(duration) {
+        const DURATION_SAVE_ID = "game_duration";
+        localStorage.setItem(DURATION_SAVE_ID, duration.toString());
+    }
+
+    static clear() {
+        localStorage.clear();
+    }
 }
